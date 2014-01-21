@@ -6,8 +6,9 @@ describe Hubspot::Contact do
       HTTParty.get("https://api.hubapi.com/contacts/v1/contact/email/testingapis@hubspot.com/profile?hapikey=demo").parsed_response
     end
   end
+  let(:apikey) { "demo" }
 
-  before{ Hubspot.configure(hapikey: "demo") }
+  before{ Hubspot.configure(hapikey: apikey) }
 
   describe "#initialize" do
     subject{ Hubspot::Contact.new(example_contact_hash) }
@@ -98,6 +99,36 @@ describe Hubspot::Contact do
     context "when the contact cannot be found" do
       let(:utk){ "invalid" }
       it{ should be_nil }
+    end
+  end
+
+  describe ".all" do
+    cassette "contact_all"
+
+    describe "without count param" do
+      subject{ Hubspot::Contact.all }
+
+      context "when response is successful" do
+
+        it "returns an array of contacts" do
+          expect(subject.count).to eq(20)
+        end
+      end
+
+      context "when response is not successful" do
+        let(:apikey) { "bad_api_key" }
+        it "raises a HubSpot APi Error" do
+          expect{ subject }.to raise_error Hubspot::APIError
+        end
+      end
+    end
+
+    describe "with count param" do
+      subject{ Hubspot::Contact.all(count) }
+      let(:count) { 50 }
+      it "returns an array of contacts" do
+        expect(subject.count).to eq(50)
+      end
     end
   end
 

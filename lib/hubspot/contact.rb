@@ -9,6 +9,7 @@ module Hubspot
   #
   class Contact
     CREATE_CONTACT_PATH = "/contacts/v1/contact"
+    ALL_CONTACT_PATH = "/contacts/v1/lists/all/contacts/all"
     GET_CONTACT_BY_EMAIL_PATH = "/contacts/v1/contact/email/:contact_email/profile"
     GET_CONTACT_BY_ID_PATH = "/contacts/v1/contact/vid/:contact_id/profile"
     GET_CONTACT_BY_UTK_PATH = "/contacts/v1/contact/utk/:contact_utk/profile"
@@ -72,12 +73,19 @@ module Hubspot
         end
       end
 
-      # TODO: Get all contacts
       # {https://developers.hubspot.com/docs/methods/contacts/get_contacts}
-      # @param count [Fixnum] number of contacts per page; max 100
-      # @return [Hubspot::ContactCollection] the paginated collection of contacts
-      def all(count=100)
-        raise NotImplementedError
+      # @param count [Fixnum] number of contacts per page
+      # @return the array of contacts
+      def all(count=20)
+        url = Hubspot::Utils.generate_url(ALL_CONTACT_PATH, {count: count})
+        resp = HTTParty.get(url, format: :json)
+        if resp.success?
+          resp["contacts"].map do |contact_data|
+            Hubspot::Contact.new(contact_data)
+          end
+        else
+          raise Hubspot::APIError.new(resp, resp["message"])
+        end
       end
 
       # TODO: Get recently updated and created contacts
