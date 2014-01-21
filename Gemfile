@@ -18,4 +18,7 @@ group :development do
   gem "jeweler"
   gem "simplecov"
   gem "awesome_print"
+  gem "pry"
+  gem 'pry-doc'
+  gem 'pry-nav'
 end

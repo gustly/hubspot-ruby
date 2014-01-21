@@ -6,6 +6,7 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.3)
     awesome_print (1.1.0)
+    coderay (1.1.0)
     crack (0.3.2)
     diff-lcs (1.2.1)
     git (1.2.5)
@@ -19,8 +20,18 @@ GEM
       rake
       rdoc
     json (1.7.7)
+    method_source (0.8.2)
     multi_json (1.6.1)
     multi_xml (0.5.3)
+    pry (0.9.12.4)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry-doc (0.5.1)
+      pry (>= 0.9)
+      yard (>= 0.8)
+    pry-nav (0.2.3)
+      pry (~> 0.9.10)
     rake (10.0.3)
     rdoc (4.0.0)
       json (~> 1.4)
@@ -37,10 +48,12 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
+    slop (3.4.7)
     vcr (2.4.0)
     webmock (1.11.0)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
+    yard (0.8.7.3)
 
 PLATFORMS
   ruby
@@ -51,6 +64,9 @@ DEPENDENCIES
   bundler
   httparty (>= 0.10.0)
   jeweler
+  pry
+  pry-doc
+  pry-nav
   rdoc
   rr
   rspec
